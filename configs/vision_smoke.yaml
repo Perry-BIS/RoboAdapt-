@@ -1,0 +1,9 @@
+seeds: [0, 1]
+controllers: [oracle_state, rgb_open_loop, rgb_reobserve]
+displacement_m: [0.0, 0.04]
+vision_conditions:
+  - id: clean
+    image_noise_std: 0.0
+    occlusion_fraction: 0.0
+replan_threshold_m: 0.008
+adaptive_confidence_min: 0.35

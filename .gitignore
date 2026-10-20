@@ -16,6 +16,8 @@ results/*
 !results/final/**
 !results/rgb/
 !results/rgb/**
+!results/vision_v1.1/
+!results/vision_v1.1/**
 media/*.mp4
 media/*.gif
 media/frames/
@@ -24,4 +26,7 @@ media/topraw*.png
 !media/demo_reobserve_replan_seed0.mp4
 !media/matched_displacement_comparison.gif
 !media/matched_displacement_comparison.mp4
+!media/vision_closed_loop_comparison.gif
+!media/vision_closed_loop_comparison.mp4
+!media/vision_reobservation_pair.png
 

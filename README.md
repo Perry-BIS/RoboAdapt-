@@ -2,8 +2,8 @@
 
 **Robust pick-and-place control with a simulated 3-DOF Cartesian gantry gripper.**
 This is a MuJoCo-only research project. It has not been tested on a physical robot, and
-its Level-0 perception input is simulator pose plus controlled synthetic noise—not
-an RGB vision system.
+it does not claim real-world transfer. The v1.1 development line adds a genuine
+rendered-RGB control path alongside the historical v1.0.1 truth-plus-noise benchmark.
 
 The benchmark compares a one-observation `open_loop` policy with a bounded
 `reobserve_replan` policy under paired seeds and post-observation object motion.
@@ -11,6 +11,12 @@ The original minimal robot is a 3-DOF Cartesian stage with two actuated fingers.
 The 4 cm intervention directly changes the free cube's x/y state after observation
 and before action to create a stale target; it is not a physical push. During
 grasp and transport, the cube moves only through simulated contact.
+
+The v1.1 vision benchmark compares an explicit simulator-state upper reference,
+RGB open-loop control, and RGB re-observation/replanning. RGB controllers derive
+their grasp target from top-camera pixels through color segmentation, centroid
+extraction, calibrated ray/plane back-projection, and no object-pose truth. The
+simulator state is used only to calculate evaluation errors and task outcomes.
 
 ## Windows quick start
 
@@ -40,16 +46,20 @@ executable. CUDA and a discrete GPU are not required for physics evaluation.
 .\.venv\Scripts\python.exe scripts\compare_demo.py --seed 0 --displacement 0.04
 .\.venv\Scripts\python.exe scripts\rgb_sensor_demo.py --seed 0 --output media\rgb_detection.png
 .\.venv\Scripts\python.exe scripts\evaluate_rgb_sensor.py --seeds 20 --output results\rgb\observations.csv
+.\.venv\Scripts\python.exe scripts\run_vision_benchmark.py --config configs\vision_smoke.yaml --output results\vision_smoke
+.\.venv\Scripts\python.exe scripts\run_vision_benchmark.py --config configs\vision_benchmark.yaml --output results\vision_v1.1
+.\.venv\Scripts\python.exe scripts\analyze_vision_results.py --input results\vision_v1.1\episodes.csv --output results\vision_v1.1\analysis.json
+.\.venv\Scripts\python.exe scripts\plot_vision_results.py --input results\vision_v1.1\episodes.csv --output results\vision_v1.1\plots
+.\.venv\Scripts\python.exe scripts\compare_vision_demo.py --seed 0 --displacement 0.04
 ```
 
 `run_demo.py --record` uses the real MuJoCo renderer and writes a GIF. Headless
 physics tests and benchmarks do not create an OpenGL context.
 
-The optional RGB demo uses a fixed calibrated top camera, orange-color centroid,
-and known-plane back-projection. It is classical geometric vision, not a learned
-detector; the formal controller benchmark remains Level 0 (truth plus noise).
-It is not RGB-in-the-loop, inverse kinematics, reinforcement learning, VLA, or a
-Panda-arm experiment.
+The RGB controller uses a fixed calibrated top camera, orange-color centroid, and
+known-plane back-projection. It is classical geometric vision, not a learned
+detector. The v1.1 benchmark is RGB-in-the-loop, but it is not real-camera,
+inverse-kinematics, reinforcement-learning, VLA, or Panda-arm validation.
 
 ## Evidence and scope
 
@@ -68,6 +78,30 @@ License: MIT for project code/assets. MuJoCo is an Apache-2.0 dependency; see
 `NOTICE.md`.
 
 ## Reproduced results
+
+### v1.1 development candidate: rendered RGB in the control loop
+
+The independent v1.1 run contains 360 episodes (20 seeds × 3 visual conditions ×
+2 displacement levels × 3 controllers). Oracle state succeeded in 120/120,
+RGB open loop in 67/120 (55.8%), and RGB re-observation/replanning in 118/120
+(98.3%). The paired RGB improvement is +42.5 percentage points; the exploratory
+seed-cluster bootstrap interval is +35.0 to +49.2 points. RGB re-observation used
+27.3% more physics steps than RGB open loop. Two re-observation episodes failed
+because the seeded image occluder prevented the initial cube detection.
+
+![Vision benchmark success](results/vision_v1.1/plots/vision_success_rate.png)
+
+![Initial and displaced RGB observations](media/vision_reobservation_pair.png)
+
+![Matched oracle, RGB open-loop, and RGB re-observation trials](media/vision_closed_loop_comparison.gif)
+
+These are simulation results from a deliberately clean color/geometry pipeline.
+See `docs/VISION_V1.1_REPORT.md` and `results/vision_v1.1/analysis.json` for the
+method, condition-level results, exploratory statistics, and limitations. The
+adaptive threshold variant was also piloted on 120 episodes but matched fixed
+re-observation (58/60 each), so no adaptive improvement is claimed.
+
+### v1.0.1 historical truth-plus-noise benchmark
 
 The checked-in final run contains 320 physics episodes (20 seeds × 4 noise
 levels × 2 displacement levels × 2 controllers), all using scene hash

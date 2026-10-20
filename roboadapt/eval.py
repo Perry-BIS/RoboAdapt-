@@ -15,7 +15,7 @@ import mujoco
 import numpy as np
 import yaml
 
-from .control import run_episode
+from .control import VISION_CONTROLLERS, run_episode, run_vision_episode
 from .env import RoboAdaptEnv
 from .task import sample_task
 
@@ -25,6 +25,15 @@ SCHEMA = [
     "displacement_m", "success_grasp", "success_place", "steps", "sim_seconds",
     "wall_seconds", "replan_count", "observation_count", "endpoint_error_m",
     "initial_observation_error_m", "final_observation_error_m", "failure_reason", "model_hash",
+]
+
+VISION_SCHEMA = [
+    "timestamp", "git_commit", "seed", "condition_id", "controller", "control_target_source",
+    "vision_condition", "image_noise_std", "occlusion_fraction", "displacement_m",
+    "success_grasp", "success_place", "steps", "sim_seconds", "wall_seconds",
+    "replan_count", "observation_count", "detection_failure_count", "endpoint_error_m",
+    "initial_localization_error_m", "final_localization_error_m", "initial_confidence",
+    "final_confidence", "failure_reason", "model_hash",
 ]
 
 
@@ -38,11 +47,52 @@ def load_config(path: str | Path) -> dict[str, Any]:
     return config
 
 
+def load_vision_config(path: str | Path) -> dict[str, Any]:
+    """Load and validate a v1.1 vision benchmark configuration."""
+    with open(path, "r", encoding="utf-8") as handle:
+        config = yaml.safe_load(handle)
+    required = {"seeds", "controllers", "displacement_m", "vision_conditions"}
+    missing = required - set(config)
+    if missing:
+        raise ValueError(f"missing config keys: {sorted(missing)}")
+    unknown = set(config["controllers"]) - set(VISION_CONTROLLERS)
+    if unknown:
+        raise ValueError(f"unknown vision controllers: {sorted(unknown)}")
+    if not config["vision_conditions"]:
+        raise ValueError("vision_conditions must not be empty")
+    ids: set[str] = set()
+    for condition in config["vision_conditions"]:
+        condition_id = str(condition["id"])
+        if condition_id in ids:
+            raise ValueError(f"duplicate vision condition id: {condition_id}")
+        ids.add(condition_id)
+        if float(condition.get("image_noise_std", 0.0)) < 0:
+            raise ValueError("image_noise_std must be non-negative")
+        occlusion = float(condition.get("occlusion_fraction", 0.0))
+        if not 0.0 <= occlusion < 1.0:
+            raise ValueError("occlusion_fraction must be in [0, 1)")
+    return config
+
+
 def git_commit() -> str:
     try:
-        return subprocess.check_output(
+        commit = subprocess.check_output(
             ["git", "rev-parse", "--short", "HEAD"], stderr=subprocess.DEVNULL, text=True
         ).strip()
+        dirty = subprocess.check_output(
+            [
+                "git",
+                "status",
+                "--porcelain",
+                "--untracked-files=no",
+                "--",
+                ":(exclude)results/**",
+                ":(exclude)media/**",
+            ],
+            stderr=subprocess.DEVNULL,
+            text=True,
+        ).strip()
+        return f"{commit}-dirty" if dirty else commit
     except (OSError, subprocess.CalledProcessError):
         return "uncommitted"
 
@@ -87,6 +137,92 @@ def run_benchmark(config: dict[str, Any], output_dir: str | Path) -> Path:
         "created_utc": datetime.now(timezone.utc).isoformat(), "episodes": len(rows),
         "python": sys.version, "platform": platform.platform(), "mujoco": mujoco.__version__,
         "numpy": np.__version__, "model_hash": env.model_hash, "config": config,
+    }
+    (output / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    return csv_path
+
+
+def run_vision_benchmark(config: dict[str, Any], output_dir: str | Path) -> Path:
+    """Run paired oracle and RGB control episodes into an independent directory."""
+    output = Path(output_dir)
+    output.mkdir(parents=True, exist_ok=True)
+    csv_path = output / "episodes.csv"
+    env = RoboAdaptEnv()
+    rows: list[dict[str, Any]] = []
+    for vision_condition in config["vision_conditions"]:
+        vision_id = str(vision_condition["id"])
+        image_noise_std = float(vision_condition.get("image_noise_std", 0.0))
+        occlusion_fraction = float(vision_condition.get("occlusion_fraction", 0.0))
+        for displacement in config["displacement_m"]:
+            displacement = float(displacement)
+            condition = f"vision={vision_id}_disp={displacement:.3f}"
+            for seed in config["seeds"]:
+                seed = int(seed)
+                sample = sample_task(seed, displacement)
+                for controller in config["controllers"]:
+                    result = run_vision_episode(
+                        env,
+                        seed=seed,
+                        controller=str(controller),
+                        object_xy=sample.object_xy,
+                        displacement_xy=sample.displacement_xy,
+                        image_noise_std=image_noise_std,
+                        occlusion_fraction=occlusion_fraction,
+                        replan_threshold_m=float(config.get("replan_threshold_m", 0.008)),
+                        adaptive_confidence_min=float(config.get("adaptive_confidence_min", 0.35)),
+                    )
+                    row = {
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "git_commit": git_commit(),
+                        "seed": seed,
+                        "condition_id": condition,
+                        "controller": controller,
+                        "control_target_source": (
+                            "simulator_state" if controller == "oracle_state" else "rendered_rgb"
+                        ),
+                        "vision_condition": vision_id,
+                        "image_noise_std": image_noise_std,
+                        "occlusion_fraction": occlusion_fraction,
+                        "displacement_m": displacement,
+                        "success_grasp": result.success_grasp,
+                        "success_place": result.success_place,
+                        "steps": result.steps,
+                        "sim_seconds": result.sim_seconds,
+                        "wall_seconds": result.wall_seconds,
+                        "replan_count": result.replan_count,
+                        "observation_count": result.observation_count,
+                        "detection_failure_count": result.detection_failure_count,
+                        "endpoint_error_m": result.endpoint_error_m,
+                        "initial_localization_error_m": result.initial_localization_error_m,
+                        "final_localization_error_m": result.final_localization_error_m,
+                        "initial_confidence": result.initial_confidence,
+                        "final_confidence": result.final_confidence,
+                        "failure_reason": result.failure_reason,
+                        "model_hash": env.model_hash,
+                    }
+                    rows.append(row)
+                    print(
+                        f"{condition} seed={seed} {controller}: "
+                        f"place={result.success_place} ({result.failure_reason})"
+                    )
+    with csv_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=VISION_SCHEMA)
+        writer.writeheader()
+        writer.writerows(rows)
+    metadata = {
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "episodes": len(rows),
+        "git_commit": git_commit(),
+        "python": sys.version,
+        "platform": platform.platform(),
+        "mujoco": mujoco.__version__,
+        "numpy": np.__version__,
+        "model_hash": env.model_hash,
+        "control_input_policy": {
+            "oracle_state": "simulator cube x/y; upper reference only",
+            "rgb_controllers": "rendered RGB estimate only; truth used only for metrics",
+        },
+        "config": config,
     }
     (output / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     return csv_path
