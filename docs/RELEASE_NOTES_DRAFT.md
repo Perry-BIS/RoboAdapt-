@@ -1,13 +1,16 @@
-# RoboAdapt v1.0.0 — release notes draft (not published)
+# RoboAdapt v1.0.1 — release notes draft (not published)
 
-Initial reproducible release of the simulation-only RoboAdapt benchmark.
+Intended first public release of the simulation-only RoboAdapt benchmark. The
+local `v1.0.0` tag identifies an unpublished research snapshot; it remains intact
+for provenance, while v1.0.1 carries the repaired asset hashing, packaging, tests,
+analysis, and documentation intended for release.
 
 ## Included
 
 - Original MuJoCo Cartesian gripper scene with contact-based pickup and placement.
 - Paired open-loop and bounded re-observation/re-plan controllers.
-- 320-episode uncertainty benchmark, raw CSV/metadata, Wilson confidence intervals,
-  condition plots, and post-hoc paired analysis.
+- 320 simulated episodes organized into 160 matched pairs, raw CSV/metadata,
+  Wilson confidence intervals, condition plots, and post-hoc paired analysis.
 - Optional calibrated RGB centroid/localization demo evaluated on 20 seeded poses.
 - Windows setup, 16 automated tests, GIF/MP4 demo, technical report, and limitations.
 - Cross-platform normalized scene hashing, explicit wheel package data, strict
@@ -26,4 +29,5 @@ Without scripted displacement the controllers scored 77.5% and 80.0%; under the
 directly changes free-body state before action and is not a physical push. The
 formal benchmark uses truth plus Gaussian noise rather than RGB-in-the-loop.
 
-This file is a draft. No GitHub release or external publication has been created.
+This file and the official release remain drafts pending explicit approval. No
+GitHub release or external publication has been created.
