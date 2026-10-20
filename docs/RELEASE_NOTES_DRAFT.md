@@ -9,7 +9,10 @@ Initial reproducible release of the simulation-only RoboAdapt benchmark.
 - 320-episode uncertainty benchmark, raw CSV/metadata, Wilson confidence intervals,
   condition plots, and post-hoc paired analysis.
 - Optional calibrated RGB centroid/localization demo evaluated on 20 seeded poses.
-- Windows setup, 11 automated tests, GIF/MP4 demo, technical report, and limitations.
+- Windows setup, 16 automated tests, GIF/MP4 demo, technical report, and limitations.
+- Cross-platform normalized scene hashing, explicit wheel package data, strict
+  10/10 smoke acceptance, deterministic paired/seed-block analysis, and a matched
+  open-loop/adaptive comparison video.
 
 ## Main measured result
 
@@ -17,5 +20,10 @@ Aggregate placement success was 51.9% for open loop and 79.4% for adaptive contr
 under the checked-in matrix. The adaptive strategy added 25.3% physics steps and
 remained unreliable at 4 cm pose noise. These are MuJoCo simulation results, not
 physical-robot measurements.
+
+Without scripted displacement the controllers scored 77.5% and 80.0%; under the
+4 cm pre-action state displacement they scored 26.25% and 78.75%. The intervention
+directly changes free-body state before action and is not a physical push. The
+formal benchmark uses truth plus Gaussian noise rather than RGB-in-the-loop.
 
 This file is a draft. No GitHub release or external publication has been created.

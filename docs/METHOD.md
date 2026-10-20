@@ -10,6 +10,16 @@ not an RGB vision model. `open_loop` observes once before an optional displaceme
 `reobserve_replan` makes the same first observation, observes again before descent,
 and changes its target at most once when the difference exceeds 8 mm.
 
+The displacement is a controlled, scripted state intervention: after the first
+observation and before action, `env.displace_cube()` directly increments the free
+joint's x/y `qpos`, clears free-body velocity, calls forward dynamics, and allows
+0.15 simulated seconds to settle. It is not a collision-generated push. No cube
+state is rewritten during grasping, lifting, transport, release, or evaluation.
+
+The robot is a simulated 3-axis Cartesian gantry gripper. The benchmark does not
+contain an articulated Panda arm, inverse kinematics, RGB-in-the-loop control,
+reinforcement learning, or a vision-language-action model.
+
 Paired comparisons share the initial object pose, displacement, seed, motion
 limits, task logic, and success checks. A grasp succeeds only if the free cube is
 lifted above 75 mm. Placement additionally requires release within 50 mm of the

@@ -1,0 +1,107 @@
+{
+  "source_csv": "results\\final\\episodes.csv",
+  "episodes": 320,
+  "paired_scenarios": 160,
+  "duplicate_episode_keys": 0,
+  "controllers": {
+    "open_loop": {
+      "successes": 83,
+      "episodes": 160,
+      "success_rate": 0.51875,
+      "wilson_95": [
+        0.44180221922881474,
+        0.5948185484522539
+      ],
+      "mean_wall_seconds": 0.016400890624979018,
+      "mean_steps": 2230.55,
+      "mean_sim_seconds": 4.4611
+    },
+    "reobserve_replan": {
+      "successes": 127,
+      "episodes": 160,
+      "success_rate": 0.79375,
+      "wilson_95": [
+        0.7245262240066808,
+        0.84919913633006
+      ],
+      "mean_wall_seconds": 0.02078732249999286,
+      "mean_steps": 2794.125,
+      "mean_sim_seconds": 5.5882499999999995
+    }
+  },
+  "aggregate_rate_difference": 0.2749999999999999,
+  "paired_outcomes": {
+    "both_success": 69,
+    "both_failure": 19,
+    "adaptive_only": 58,
+    "open_only": 14
+  },
+  "naive_posthoc_mcnemar_p": 1.6464300115968573e-07,
+  "displacement_strata": {
+    "0.00": {
+      "open_loop": {
+        "successes": 62,
+        "episodes": 80,
+        "success_rate": 0.775
+      },
+      "reobserve_replan": {
+        "successes": 64,
+        "episodes": 80,
+        "success_rate": 0.8
+      }
+    },
+    "0.04": {
+      "open_loop": {
+        "successes": 21,
+        "episodes": 80,
+        "success_rate": 0.2625
+      },
+      "reobserve_replan": {
+        "successes": 63,
+        "episodes": 80,
+        "success_rate": 0.7875
+      }
+    }
+  },
+  "seed_cluster_exploratory": {
+    "seed_count": 20,
+    "conditions_per_seed": 8,
+    "bootstrap_resamples": 200000,
+    "bootstrap_rng_seed": 20261019,
+    "rate_difference_percentile_95": [
+      0.14375,
+      0.4
+    ],
+    "exact_sign_flip_p": 0.00131988525390625,
+    "integer_seed_scores": [
+      2,
+      5,
+      3,
+      2,
+      3,
+      -1,
+      0,
+      4,
+      -3,
+      3,
+      -2,
+      0,
+      4,
+      6,
+      5,
+      2,
+      2,
+      4,
+      2,
+      3
+    ]
+  },
+  "outcome_diagnostics": {
+    "grasp_place_mismatch_count": 0,
+    "failure_reason_counts": {
+      "success": 210,
+      "grasp_missed": 110
+    }
+  },
+  "interpretation_caveat": "Seeds are reused across eight scenario conditions. The row-level McNemar calculation is post-hoc and treats scenario pairs as independent; seed-block analyses are exploratory."
+}

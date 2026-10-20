@@ -58,3 +58,28 @@
 - Repository is locally Git-ready. External GitHub creation/push, release, PR,
   website publication, or third-party compute use remains intentionally unperformed
   until the user explicitly authorizes it.
+
+## 2026-10-19 — independent-review release fixes
+
+- Confirmed `b4910be` is reachable and that `b4910be..v1.0.0` contains no changes
+  to `roboadapt/`, `scripts/`, or `configs/`; the intervening commits only recorded
+  final evidence/metadata and removed generated debug artifacts.
+- Added LF enforcement for XML and a CRLF/LF-normalized model content hash. The
+  historical identifier remains `498e7b75553ad823`; the checked-out raw LF file
+  now has the same prefix. Historical episode CSV bytes were not modified (Git blob
+  `5310622d0e11b8271300d82f09bd235fe32b58d9`).
+- Aligned package version to 1.0.0, declared Python 3.11–3.12, explicitly packaged
+  `assets/*.xml`, and verified a non-editable wheel in a clean environment. Wheel
+  SHA-256: `FF72CDD084DED9EC252414776991FE020696F735CAE55CFE199F19114F96EBE3`.
+- Strengthened smoke acceptance from at least 1/10 to a declared 10/10 minimum.
+  Final local result: 10/10 PASS. Full suite: 16 passed; `pip check`: clean.
+- Added deterministic CSV analysis: displacement-stratified rates, row-level paired
+  diagnostics, 200,000-resample seed-cluster bootstrap, exact seed-block sign flip,
+  and outcome diagnostics. All reviewed statistics were reproduced from raw CSV.
+- Added matched seed-0 comparison media: open loop misses while adaptive succeeds
+  under the same scripted 4 cm pre-action displacement.
+- Did not rerun or replace the 320 historical rows because no scene physics,
+  controller motion, sampling, or success-metric execution changed. A five-seed
+  representative paired sweep reproduced open-loop 0/5 and adaptive 5/5.
+- Full before/after evidence, failed attempts, commands, and unresolved release-tag
+  caveat are recorded in `docs/RELEASE_AUDIT.md`.

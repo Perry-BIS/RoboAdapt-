@@ -8,6 +8,19 @@ import numpy as np
 import mujoco
 
 
+def canonical_asset_bytes(content: bytes) -> bytes:
+    """Normalize text newlines for a cross-platform asset content identifier."""
+    return content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+
+def canonical_asset_digest(content: bytes) -> str:
+    return hashlib.sha256(canonical_asset_bytes(content)).hexdigest()[:16]
+
+
+def canonical_asset_hash(path: str | Path) -> str:
+    return canonical_asset_digest(Path(path).read_bytes())
+
+
 class RoboAdaptEnv:
     dt = 0.002
     goal_xy = np.array([0.18, 0.14], dtype=float)
@@ -24,6 +37,12 @@ class RoboAdaptEnv:
 
     @property
     def model_hash(self) -> str:
+        """Newline-normalized SHA-256 prefix used by historical experiment rows."""
+        return canonical_asset_hash(self.model_path)
+
+    @property
+    def raw_model_hash(self) -> str:
+        """Raw-byte SHA-256 prefix, useful for archive integrity diagnostics."""
         return hashlib.sha256(self.model_path.read_bytes()).hexdigest()[:16]
 
     @property
@@ -48,6 +67,12 @@ class RoboAdaptEnv:
         return self.cube_position
 
     def displace_cube(self, delta_xy: np.ndarray) -> None:
+        """Apply a scripted pre-action state displacement for the experiment.
+
+        This directly updates the free joint's x/y qpos, clears its velocity, then
+        settles physics. It models a stale target; it is not a physical push and
+        is never called during contact grasping or transport.
+        """
         adr = self._cube_joint
         self.data.qpos[adr : adr + 2] += np.asarray(delta_xy, dtype=float)
         self.data.qvel[self.model.joint("cube_free").dofadr[0] :][:6] = 0

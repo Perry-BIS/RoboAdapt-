@@ -1,0 +1,3 @@
+# MuJoCo assets must archive and check out identically on every platform.
+roboadapt/assets/*.xml text eol=lf
+

@@ -101,3 +101,12 @@ def wilson_interval(successes: int, total: int, z: float = 1.959963984540054) ->
     spread = z * np.sqrt(p * (1 - p) / total + z * z / (4 * total * total)) / denominator
     return float(center - spread), float(center + spread)
 
+
+def smoke_accepts(successes: int, *, total: int = 10, minimum: int = 10) -> bool:
+    """Return whether a declared smoke run meets its explicit acceptance bar."""
+    if not 0 <= minimum <= total:
+        raise ValueError("minimum must be between zero and total")
+    if not 0 <= successes <= total:
+        raise ValueError("successes must be between zero and total")
+    return successes >= minimum
+
