@@ -91,8 +91,12 @@ the fixed and thresholded rules behave equivalently in the tested matrix.
   --output results\vision_v1.1\plots
 ```
 
-Every row records source commit `0ce598e`. CSV SHA-256:
+Every row records source commit `0ce598e`. The Windows working copy uses CRLF
+line endings (94,614 bytes), SHA-256
 `F9A593AE042EA2852B50533B78783945566F1C601BAC751FA3433151B95E4135`.
+The Git blob uses LF line endings (94,253 bytes), SHA-256
+`2DAFBCA0ED763F37BD27B57899E96D483076B96A815E5A013370B94B08357A84`.
+The rows and values are identical; only newline encoding differs.
 
 ## Limitations
 
