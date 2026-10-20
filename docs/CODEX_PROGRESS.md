@@ -37,11 +37,12 @@
 
 ### Actual commands and outcomes
 
-- `.venv\Scripts\python.exe -m pytest -q` → **11 passed** (0.84 s final check).
+- `.venv\Scripts\python.exe -m pytest -q` → **11 passed** (0.91 s final check).
 - `.venv\Scripts\python.exe scripts\smoke_test.py` → **10/10** adaptive placement
   successes with 4 cm target displacement.
 - Formal benchmark → **320/320 episodes completed**. Open loop: 83/160 (51.9%);
-  re-observe/re-plan: 127/160 (79.4%). Exact paired McNemar p=1.65e-7.
+  re-observe/re-plan: 127/160 (79.4%). Exact paired McNemar p=1.65e-7. Every
+  final CSV row records source snapshot `b4910be` and scene hash `498e7b75553ad823`.
 - Plot regeneration → `success_rate.png`, `endpoint_error.png`,
   `failure_categories.png`, `timing_steps.png`, plus summary CSVs.
 - Real renderer capture → 246-frame GIF (941,820 bytes) and MP4 (264,688 bytes).
