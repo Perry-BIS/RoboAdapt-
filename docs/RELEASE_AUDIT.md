@@ -1,7 +1,9 @@
 # RoboAdapt release audit after independent review
 
-**Audit date:** 2026-10-19 (America/Chicago)  
-**Scope:** local repository and Windows runtime; no remote publication performed  
+**Audit date:** 2026-10-19 (America/Chicago)
+
+**Scope:** local repository and Windows runtime; no remote publication performed
+
 **Reviewed archive SHA-256:** `C4817E36BCB5CB5913A06CCFBBDE13795349DDE82E960E7841F0B7956F33ACAC`
 
 ## Decision
@@ -118,12 +120,31 @@ analysis, smoke acceptance, documentation, and presentation media. Replacing the
 historical CSV would reduce rather than improve provenance. Unit/integration tests,
 strict smoke, and the representative paired sweep were rerun locally.
 
+## Archive reconstruction
+
+After committing the release fixes (`138b3a5`), a prefixed Git ZIP archive was
+created from `HEAD`, extracted into an isolated directory, and the archived XML
+was hashed directly:
+
+```text
+raw_hash        498e7b75553ad823
+normalized_hash 498e7b75553ad823
+contains_crlf   False
+bytes           3434
+```
+
+This verifies that `.gitattributes` produces an LF asset whose raw and canonical
+identifiers match the historical CSV on this Windows host. The first archive
+attempt used invalid PowerShell syntax (`--output=(...)`) and failed before any
+archive was created; the corrected `git archive ... -o <path> HEAD` command passed.
+
 ## Unresolved caveats and release recommendation
 
 - Python 3.12.14 is locally tested. Python 3.11 is declared and dependency-compatible
   but was not independently executed on this machine.
-- Archive LF reconstruction will be checked from the committed release-fix HEAD;
-  no actual Linux/macOS checkout was available in this local audit.
+- Git archive LF reconstruction passed locally. No actual Linux/macOS checkout was
+  available in this audit; canonical hashing is nevertheless covered by an
+  in-memory CRLF/LF invariance test.
 - The existing local `v1.0.0` tag identifies the pre-fix audited snapshot. It has
   not been published. Do not silently rewrite it. Before external publication,
   choose either a new `v1.0.1` tag or explicitly approve replacement of the
@@ -131,6 +152,5 @@ strict smoke, and the representative paired sweep were rerun locally.
 - The experiment remains a simplified deterministic intervention benchmark, not
   a Panda/IK/RGB-closed-loop/RL/VLA or physical-robot validation.
 
-**Recommendation:** technically ready after the archive reconstruction check;
-hold external release until the user chooses the tag strategy and explicitly
-authorizes publication.
+**Recommendation:** local technical release checks pass. Hold external release
+until the user chooses the tag strategy and explicitly authorizes publication.
