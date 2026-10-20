@@ -91,8 +91,8 @@ the fixed and thresholded rules behave equivalently in the tested matrix.
   --output results\vision_v1.1\plots
 ```
 
-CSV SHA-256:
-`8CAED27A75CBE8A101AF7C50922DCD72D1435E76D6F80D3A014187311291B3A1`.
+Every row records source commit `0ce598e`. CSV SHA-256:
+`F9A593AE042EA2852B50533B78783945566F1C601BAC751FA3433151B95E4135`.
 
 ## Limitations
 
@@ -102,3 +102,18 @@ no physical robot. The Oracle ceiling is 100%, showing the task geometry is easy
 when state is known. The detector is classical color segmentation rather than a
 learned or generalizable perception model. Synthetic channel noise and a vertical
 occluder are controlled stress tests, not substitutes for real camera variation.
+
+## Local candidate verification
+
+- Python 3.12.14: **22 tests passed**.
+- Historical strict smoke: **10/10 PASS**.
+- Development environment: `pip check` reported no broken requirements.
+- Independent analysis rerun: exact JSON-object match.
+- Fresh non-editable Wheel install: version `1.1.0.dev0`, packaged vision analysis
+  module and scene XML present.
+- Candidate Wheel SHA-256:
+  `828809FBBFEA8D92C2387E56CDA7624D301A1FFC5C409AA2F004CF344DDFDB0D`.
+- The v1.0.1 historical CSV remains unchanged with SHA-256
+  `3BEAF4F468C931D0F93338F59A67C6F380A042A7AD1C1AF92466084F92A57A33`.
+
+No v1.1 branch, tag, package, or Release has been pushed or published.

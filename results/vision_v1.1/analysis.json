@@ -1,0 +1,223 @@
+{
+  "source_csv": "results\\vision_v1.1\\episodes.csv",
+  "episodes": 360,
+  "paired_rgb_scenarios": 120,
+  "duplicate_episode_keys": 0,
+  "controllers": {
+    "oracle_state": {
+      "successes": 120,
+      "episodes": 120,
+      "success_rate": 1.0,
+      "wilson_95": [
+        0.9689808335812966,
+        1.0
+      ],
+      "mean_steps": 2923.5,
+      "mean_wall_seconds": 0.021535074166649747,
+      "mean_observations": 2.0,
+      "detection_failures": 0
+    },
+    "rgb_open_loop": {
+      "successes": 67,
+      "episodes": 120,
+      "success_rate": 0.5583333333333333,
+      "wilson_95": [
+        0.4690452309131966,
+        0.6440025330046214
+      ],
+      "mean_steps": 2259.891666666667,
+      "mean_wall_seconds": 0.10412888249996585,
+      "mean_observations": 1.0,
+      "detection_failures": 2
+    },
+    "rgb_reobserve": {
+      "successes": 118,
+      "episodes": 120,
+      "success_rate": 0.9833333333333333,
+      "wilson_95": [
+        0.941264037027841,
+        0.9954174354340789
+      ],
+      "mean_steps": 2876.858333333333,
+      "mean_wall_seconds": 0.1903740308333454,
+      "mean_observations": 1.9833333333333334,
+      "detection_failures": 3
+    }
+  },
+  "rgb_reobserve_minus_open_loop": 0.42499999999999993,
+  "paired_outcomes": {
+    "both_success": 67,
+    "both_failure": 2,
+    "reobserve_only": 51,
+    "open_loop_only": 0
+  },
+  "posthoc_exact_mcnemar_p": 8.881784197001252e-16,
+  "seed_cluster_exploratory": {
+    "seed_count": 20,
+    "conditions_per_seed": 6,
+    "bootstrap_resamples": 200000,
+    "bootstrap_rng_seed": 20261020,
+    "rate_difference_percentile_95": [
+      0.35,
+      0.4916666666666666
+    ],
+    "exact_sign_flip_p": 7.62939453125e-06,
+    "integer_seed_scores": [
+      3,
+      3,
+      3,
+      2,
+      0,
+      3,
+      0,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      1,
+      3,
+      3,
+      3
+    ]
+  },
+  "strata": {
+    "vision=clean_disp=0.000": {
+      "oracle_state": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0
+      },
+      "rgb_open_loop": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.00041130695056795796
+      },
+      "rgb_reobserve": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.00041130695056795796
+      }
+    },
+    "vision=clean_disp=0.040": {
+      "oracle_state": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0
+      },
+      "rgb_open_loop": {
+        "successes": 2,
+        "episodes": 20,
+        "success_rate": 0.1,
+        "mean_final_localization_error_m": 0.00041130695056795796
+      },
+      "rgb_reobserve": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.000470679275160475
+      }
+    },
+    "vision=noise_occlusion_disp=0.000": {
+      "oracle_state": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0
+      },
+      "rgb_open_loop": {
+        "successes": 19,
+        "episodes": 20,
+        "success_rate": 0.95,
+        "mean_final_localization_error_m": 0.0007070622797481525
+      },
+      "rgb_reobserve": {
+        "successes": 19,
+        "episodes": 20,
+        "success_rate": 0.95,
+        "mean_final_localization_error_m": 0.002698867421267761
+      }
+    },
+    "vision=noise_occlusion_disp=0.040": {
+      "oracle_state": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0
+      },
+      "rgb_open_loop": {
+        "successes": 3,
+        "episodes": 20,
+        "success_rate": 0.15,
+        "mean_final_localization_error_m": 0.0007070622797481525
+      },
+      "rgb_reobserve": {
+        "successes": 19,
+        "episodes": 20,
+        "success_rate": 0.95,
+        "mean_final_localization_error_m": 0.003610302238285446
+      }
+    },
+    "vision=sensor_noise_disp=0.000": {
+      "oracle_state": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0
+      },
+      "rgb_open_loop": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0005314123268283249
+      },
+      "rgb_reobserve": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0005595283485677551
+      }
+    },
+    "vision=sensor_noise_disp=0.040": {
+      "oracle_state": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.0
+      },
+      "rgb_open_loop": {
+        "successes": 3,
+        "episodes": 20,
+        "success_rate": 0.15,
+        "mean_final_localization_error_m": 0.0005314123268283249
+      },
+      "rgb_reobserve": {
+        "successes": 20,
+        "episodes": 20,
+        "success_rate": 1.0,
+        "mean_final_localization_error_m": 0.000497495140364945
+      }
+    }
+  },
+  "localization": {
+    "initial_mean_m": 0.0005472638790362807,
+    "initial_median_m": 0.0004188523751729,
+    "final_mean_m": 0.0009384369707648808,
+    "final_median_m": 0.0004839214902297
+  },
+  "rgb_reobserve_step_overhead_fraction": 0.2730071869226768,
+  "failure_reason_counts": {
+    "success": 305,
+    "grasp_missed": 51,
+    "initial_vision_detection_failed": 4
+  },
+  "interpretation_caveat": "All comparisons are simulation-only and paired by seed, image condition, and scripted displacement. Bootstrap and sign-flip analyses are exploratory."
+}
