@@ -154,3 +154,67 @@ archive was created; the corrected `git archive ... -o <path> HEAD` command pass
 
 **Recommendation:** local technical release checks pass. Hold external release
 until the user chooses the tag strategy and explicitly authorizes publication.
+
+## v1.0.1 final local verification
+
+**Verification date:** 2026-10-20 (America/Chicago)
+
+**Environment:** Windows, CPython 3.12.14. All commands were run locally; no
+repository, tag, release, package, or other artifact was pushed or published.
+
+The version and documentation corrections were committed as
+`1bf6e0b7c97adbe26b190e8a72bff7b4a6da0052` before this audit record was
+appended. That commit sets both package version sources to 1.0.1, identifies
+v1.0.1 as the intended first public release, and describes the experiment as 320
+simulated episodes in 160 matched pairs. The historical `v1.0.0` annotated tag
+was not moved; its tag object remains `3b72284a5561aa472d356dc930d2925cfb58c28a`
+and it dereferences to commit `4f8d3b761082750ac413f74e03226da26b9dc221`.
+
+Commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe scripts\smoke_test.py
+.\.venv\Scripts\python.exe -m pip check
+.\.venv\Scripts\python.exe scripts\analyze_results.py `
+  --input results\final\episodes.csv `
+  --output .wheeltemp\analysis-v1.0.1.json
+.\.venv\Scripts\python.exe -m pip wheel . --no-deps `
+  --no-build-isolation --wheel-dir .wheeltemp\release-v1.0.1
+.\.venv\Scripts\python.exe -m venv .wheeltemp\wheeltest-v101
+.\.wheeltemp\wheeltest-v101\Scripts\python.exe -m pip install `
+  .\.wheeltemp\release-v1.0.1\roboadapt-1.0.1-py3-none-any.whl
+.\.wheeltemp\wheeltest-v101\Scripts\python.exe -m pip check
+```
+
+Results:
+
+- Pytest: **16 passed** in 8.24 s.
+- Strict smoke: **10/10 PASS**, required 10/10, model
+  `498e7b75553ad823`.
+- Development and fresh-Wheel environments: `pip check` reported no broken
+  requirements.
+- Independent temporary analysis: exact JSON-object match to
+  `results/final/analysis.json`; the checked-in historical result files were not
+  overwritten.
+- Fresh non-editable Wheel installation: version and metadata both 1.0.1;
+  `roboadapt` imported from the fresh environment's `site-packages`; packaged
+  `roboadapt/assets/scene.xml` was present, contained no CRLF, and loaded with
+  MuJoCo 3.3.7 (`nq=12`, `nv=11`).
+- Wheel: `dist/roboadapt-1.0.1-py3-none-any.whl`, SHA-256
+  `5F4BADE4689712AD474DD9BC8DA36E47818AEE05A6CC9F6E4E8E8C4F64A24E31`.
+- Historical CSV: 70,329 bytes, SHA-256
+  `3BEAF4F468C931D0F93338F59A67C6F380A042A7AD1C1AF92466084F92A57A33`.
+- Scene XML: SHA-256
+  `498E7B75553AD823C137A630EBD43DBF7B10923AD2EFB4925F45F216B849EE6E`;
+  raw prefix remains `498e7b75553ad823`.
+- `git diff f9a32a4` was empty for `control.py`, `task.py`, `perception.py`,
+  `env.py`, `eval.py`, `assets/scene.xml`, and `configs/benchmark.yaml`; no robot
+  physics, controller, task sampling, sensor, success-metric, or benchmark-config
+  code changed in the v1.0.1 bookkeeping commit.
+
+The fresh environment's first dependency installation attempt could not reach the
+package index under sandboxed DNS. A permitted retry downloaded only the declared
+runtime dependencies and completed successfully. This was a local environment
+setup issue, not a code or package failure. The 320-episode benchmark was not
+rerun and its historical CSV remains byte-for-byte unchanged.
