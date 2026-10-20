@@ -1,0 +1,6 @@
+seed: 0
+controller: reobserve_replan
+sigma_m: 0.01
+displacement_m: 0.03
+replan_threshold_m: 0.008
+

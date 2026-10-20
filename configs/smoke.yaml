@@ -1,0 +1,6 @@
+seeds: [0, 1, 2, 3, 4]
+controllers: [open_loop, reobserve_replan]
+sigma_m: [0.0]
+displacement_m: [0.04]
+replan_threshold_m: 0.008
+

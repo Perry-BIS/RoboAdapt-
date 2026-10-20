@@ -1,0 +1,60 @@
+<mujoco model="roboadapt_cartesian_gripper">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast" iterations="60"/>
+  <visual>
+    <global offwidth="640" offheight="480"/>
+    <quality shadowsize="2048"/>
+  </visual>
+  <default>
+    <joint damping="4" armature="0.02"/>
+    <geom condim="4" friction="1.5 0.01 0.001" solref="0.006 1" solimp="0.95 0.99 0.001"/>
+  </default>
+  <asset>
+    <material name="tablemat" rgba="0.22 0.25 0.28 1"/>
+    <material name="robotmat" rgba="0.18 0.42 0.75 1"/>
+    <material name="fingermat" rgba="0.1 0.12 0.15 1"/>
+    <material name="cubemat" rgba="0.92 0.32 0.16 1"/>
+    <material name="goalmat" rgba="0.2 0.75 0.35 0.35"/>
+  </asset>
+  <worldbody>
+    <light pos="0 -0.4 1.0" dir="0 0.3 -1" diffuse="0.9 0.9 0.9"/>
+    <geom name="floor" type="plane" size="1 1 0.05" material="tablemat"/>
+    <geom name="goal" type="cylinder" pos="0.18 0.14 0.002" size="0.055 0.002" material="goalmat" contype="0" conaffinity="0"/>
+    <body name="x_stage">
+      <inertial pos="0 0 0" mass="0.25" diaginertia="0.001 0.001 0.001"/>
+      <joint name="x" type="slide" axis="1 0 0" range="-0.26 0.26"/>
+      <body name="y_stage">
+        <inertial pos="0 0 0" mass="0.25" diaginertia="0.001 0.001 0.001"/>
+        <joint name="y" type="slide" axis="0 1 0" range="-0.24 0.24"/>
+        <body name="palm">
+          <joint name="z" type="slide" axis="0 0 1" range="0.09 0.32"/>
+          <geom name="palm_geom" type="box" pos="0 0 -0.005" size="0.055 0.075 0.012" material="robotmat" mass="1.0" contype="0" conaffinity="0"/>
+          <site name="tool" pos="0 0 -0.078" size="0.008" rgba="1 1 0 1"/>
+          <camera name="wrist" pos="0 -0.11 -0.015" xyaxes="1 0 0 0 0.45 0.89" fovy="55"/>
+          <body name="left_finger" pos="0 -0.058 -0.06">
+            <joint name="left_finger_joint" type="slide" axis="0 1 0" range="0 0.036" damping="2"/>
+            <geom name="left_finger_geom" type="box" size="0.022 0.009 0.045" material="fingermat" mass="0.18" friction="2.5 0.02 0.002"/>
+          </body>
+          <body name="right_finger" pos="0 0.058 -0.06">
+            <joint name="right_finger_joint" type="slide" axis="0 -1 0" range="0 0.036" damping="2"/>
+            <geom name="right_finger_geom" type="box" size="0.022 0.009 0.045" material="fingermat" mass="0.18" friction="2.5 0.02 0.002"/>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="cube" pos="-0.08 -0.04 0.022">
+      <freejoint name="cube_free"/>
+      <geom name="cube_geom" type="box" size="0.021 0.021 0.021" material="cubemat" mass="0.09" friction="1.8 0.02 0.002"/>
+    </body>
+    <camera name="overview" pos="0.58 -0.62 0.52" xyaxes="0.73 0.68 0 -0.31 0.33 0.89" fovy="48"/>
+    <camera name="topdown" pos="0 0 0.65" xyaxes="1 0 0 0 1 0" fovy="48"/>
+  </worldbody>
+  <actuator>
+    <position name="x_act" joint="x" kp="650" kv="55" ctrlrange="-0.26 0.26" forcerange="-160 160"/>
+    <position name="y_act" joint="y" kp="650" kv="55" ctrlrange="-0.24 0.24" forcerange="-160 160"/>
+    <position name="z_act" joint="z" kp="700" kv="60" ctrlrange="0.09 0.32" forcerange="-180 180"/>
+    <position name="left_grip" joint="left_finger_joint" kp="220" kv="8" ctrlrange="0 0.036" forcerange="-45 45"/>
+    <position name="right_grip" joint="right_finger_joint" kp="220" kv="8" ctrlrange="0 0.036" forcerange="-45 45"/>
+  </actuator>
+</mujoco>
+

@@ -1,0 +1,8 @@
+{
+  "observations": 20,
+  "mean_error_m": 0.00041130695056800713,
+  "median_error_m": 0.00040712778278718346,
+  "max_error_m": 0.0007537063219772626,
+  "model_hash": "498e7b75553ad823",
+  "output": "results\\rgb\\observations.csv"
+}
