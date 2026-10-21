@@ -277,4 +277,48 @@ matched scenarios where both methods succeed, re-observe adds exactly 50 steps
 
 ### Final v1.1.0 verification
 
-`TO_BE_REPLACED_AFTER_FINAL_VERIFICATION`
+The release-evidence and version changes were first committed as `6c6a4a2`.
+The Wheel was built with Python 3.12.14 and a fixed `SOURCE_DATE_EPOCH`, installed
+non-editably with all pinned dependencies into a newly created virtual environment,
+and validated from the repository's parent directory.
+
+Actual verification results:
+
+```text
+Pytest: 22 passed in 1.58s
+Strict smoke: 10/10 PASS; required=10/10; model=498e7b75553ad823
+Development pip check: No broken requirements found.
+Fresh-Wheel pip check: No broken requirements found.
+WHEEL_IMPORT_MODEL_LOAD=PASS
+version=1.1.0
+model_hash=498e7b75553ad823
+nq=12 nv=11
+```
+
+The fresh import path was inside
+`.wheeltemp/wheeltest-v1.1.0-final/Lib/site-packages/roboadapt`, not the source
+checkout. Both packaged `vision_analysis.py` and `assets/scene.xml` were present;
+the scene loaded successfully in MuJoCo 3.3.7.
+
+Final local candidate Wheel:
+
+```text
+roboadapt-1.1.0-py3-none-any.whl
+SHA-256 2DB076906C991EAE374311ECBC023D5CE1803A432611CB0D97BE1D5DEDC81E9B
+```
+
+Historical evidence remained unchanged:
+
+```text
+results/final/episodes.csv
+SHA-256 3BEAF4F468C931D0F93338F59A67C6F380A042A7AD1C1AF92466084F92A57A33
+
+results/vision_v1.1/episodes.csv (Windows working-copy bytes)
+SHA-256 F9A593AE042EA2852B50533B78783945566F1C601BAC751FA3433151B95E4135
+
+roboadapt/assets/scene.xml
+SHA-256 498E7B75553AD823C137A630EBD43DBF7B10923AD2EFB4925F45F216B849EE6E
+```
+
+No v1.1.0 tag was created because the user has not separately confirmed local tag
+creation. No branch, tag, Wheel, archive, or GitHub Release was pushed or published.

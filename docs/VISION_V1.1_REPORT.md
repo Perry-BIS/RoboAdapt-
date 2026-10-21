@@ -130,7 +130,7 @@ occluder are controlled stress tests, not substitutes for real camera variation.
 - Final non-editable Wheel install: version `1.1.0`, with `vision_analysis.py` and
   `scene.xml` present and model loading verified.
 - Final local release-candidate Wheel SHA-256:
-  `TO_BE_REPLACED_AFTER_FINAL_BUILD`.
+  `2DB076906C991EAE374311ECBC023D5CE1803A432611CB0D97BE1D5DEDC81E9B`.
 - The v1.0.1 historical CSV remains unchanged with SHA-256
   `3BEAF4F468C931D0F93338F59A67C6F380A042A7AD1C1AF92466084F92A57A33`.
 
