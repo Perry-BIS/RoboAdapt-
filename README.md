@@ -79,14 +79,18 @@ License: MIT for project code/assets. MuJoCo is an Apache-2.0 dependency; see
 
 ## Reproduced results
 
-### v1.1 development candidate: rendered RGB in the control loop
+### v1.1.0 release candidate: rendered RGB in the control loop
 
-The independent v1.1 run contains 360 episodes (20 seeds × 3 visual conditions ×
-2 displacement levels × 3 controllers). Oracle state succeeded in 120/120,
+The independent v1.1 run contains 360 episodes (20 base seeds reused across 3 visual
+conditions × 2 displacement levels × 3 controllers). This yields 120 matched
+scenarios, not 120 independent random geometry seeds. Oracle state succeeded in 120/120,
 RGB open loop in 67/120 (55.8%), and RGB re-observation/replanning in 118/120
 (98.3%). The paired RGB improvement is +42.5 percentage points; the exploratory
 seed-cluster bootstrap interval is +35.0 to +49.2 points. RGB re-observation used
-27.3% more physics steps than RGB open loop. Two re-observation episodes failed
+27.3% more mean episode physics steps across all trials. This is not pure image
+processing cost: many open-loop failures terminate before transport and placement.
+Within the 67 pairs where both methods succeeded, re-observation added exactly 50
+physics steps (`0.10 s` simulated time) per pair. Two re-observation episodes failed
 because the seeded image occluder prevented the initial cube detection.
 
 ![Vision benchmark success](results/vision_v1.1/plots/vision_success_rate.png)
@@ -95,11 +99,19 @@ because the seeded image occluder prevented the initial cube detection.
 
 ![Matched oracle, RGB open-loop, and RGB re-observation trials](media/vision_closed_loop_comparison.gif)
 
-These are simulation results from a deliberately clean color/geometry pipeline.
+Here “visual feedback” means a second simulated top-view RGB observation and
+pre-grasp replanning, not continuous visual servoing during motion. These are
+simulation results from a deliberately clean color/geometry pipeline with one
+orange cube, a fixed calibrated camera, known plane height, fixed lighting, and
+specified synthetic noise/occlusion.
 See `docs/VISION_V1.1_REPORT.md` and `results/vision_v1.1/analysis.json` for the
 method, condition-level results, exploratory statistics, and limitations. The
-adaptive threshold variant was also piloted on 120 episodes but matched fixed
-re-observation (58/60 each), so no adaptive improvement is claimed.
+adaptive threshold variant was also explored in 120 episodes (60 matched scenarios)
+and matched fixed re-observation at 58/60 successes each, so no adaptive improvement
+is claimed. Its original CSV, metadata, config, and audit summary are retained in
+`results/vision_adaptive_pilot/`. The rows record base commit `2cada2c` because the
+vision code was then uncommitted; the exact dirty source snapshot cannot be
+reconstructed, so this pilot is supporting exploratory evidence only.
 
 ### v1.0.1 historical truth-plus-noise benchmark
 

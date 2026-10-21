@@ -18,6 +18,8 @@ results/*
 !results/rgb/**
 !results/vision_v1.1/
 !results/vision_v1.1/**
+!results/vision_adaptive_pilot/
+!results/vision_adaptive_pilot/**
 media/*.mp4
 media/*.gif
 media/frames/

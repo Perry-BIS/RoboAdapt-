@@ -218,3 +218,63 @@ package index under sandboxed DNS. A permitted retry downloaded only the declare
 runtime dependencies and completed successfully. This was a local environment
 setup issue, not a code or package failure. The 320-episode benchmark was not
 rerun and its historical CSV remains byte-for-byte unchanged.
+
+## v1.1.0 independent-review fixes
+
+**Review-fix date:** 2026-10-20 (America/Chicago)
+
+The independent review verified the 360-row main CSV but found three publication
+evidence issues. The following corrections preserve the original v1.0.1 and v1.1
+experiment CSV bytes.
+
+### Experiment-source traceability
+
+The main v1.1 CSV records source commit `0ce598e`; the first review archive used
+HEAD `d9e0a4471dadbe364bbac8d43917e632b28ea4f9`. The requested local comparison was:
+
+```text
+git diff 0ce598e..d9e0a44 -- roboadapt scripts configs
+```
+
+Its only changed path was the newly added
+`scripts/build_vision_review_artifacts.py`. A separate
+`git diff --quiet 0ce598e..d9e0a44 -- roboadapt configs` returned exit code 0.
+Therefore no runtime package module, controller, perception implementation,
+environment, task sampler, or experiment configuration changed between the
+recorded experiment commit and the first review HEAD. The added script reads the
+committed CSV and produces reviewer-facing tables; it cannot affect those episodes.
+
+### Wheel-build identity
+
+The hash `828809FBBFEA8D92C2387E56CDA7624D301A1FFC5C409AA2F004CF344DDFDB0D`
+belongs to a superseded pre-review `1.1.0.dev0` build. The Wheel actually included
+in the independently reviewed ZIP hashes to
+`78915C5F7EB9CC794E4BC0EC69B52C985BAE6B26746E3D574182EB0FC3909BBB`.
+Neither is the final `1.1.0` artifact. The final Wheel and archive hashes are
+recorded in the final verification subsection below.
+
+### Adaptive pilot evidence
+
+The original ignored pilot output was recovered without altering its bytes and
+preserved under `results/vision_adaptive_pilot/`, together with the exact config,
+metadata, generated audit summary, and a dedicated analysis script. The 120 rows
+contain 60 matched scenarios: fixed re-observe and adaptive each succeed 58/60,
+with 58 both-success and 2 both-failure outcomes, no discordant outcomes, and
+identical step counts within all both-success pairs.
+
+The rows record base commit `2cada2c`. The vision implementation was uncommitted
+when this earlier pilot ran, so Git cannot reconstruct its exact dirty source
+snapshot. The result is retained transparently as exploratory evidence only, is
+not included in the 360-episode main claim, and does not support adaptive superiority.
+
+### Physics-step interpretation
+
+The all-trial means are 2,259.89 steps for RGB open loop and 2,876.86 for RGB
+re-observe (+27.3%). Many open-loop failures terminate before transport and
+placement, so this is not pure computation or perception overhead. In the 67
+matched scenarios where both methods succeed, re-observe adds exactly 50 steps
+(`0.10 s` simulated time) in every pair.
+
+### Final v1.1.0 verification
+
+`TO_BE_REPLACED_AFTER_FINAL_VERIFICATION`

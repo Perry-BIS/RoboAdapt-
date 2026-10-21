@@ -1,0 +1,47 @@
+{
+  "status": "exploratory pilot; not part of the 360-episode main benchmark",
+  "source_csv": "results/vision_adaptive_pilot/episodes.csv",
+  "source_csv_sha256": "2cbf70f0354ae246ec8925b0440c5e8e0d4ba7344d072424d950b6a0a0121cb4",
+  "episodes": 120,
+  "paired_scenarios": 60,
+  "duplicate_controller_episode_keys": 0,
+  "controllers": {
+    "rgb_reobserve": {
+      "successes": 58,
+      "episodes": 60,
+      "success_rate": 0.9666666666666667,
+      "mean_steps": 2830.2166666666667,
+      "mean_observations": 1.9666666666666666,
+      "mean_replans": 0.95,
+      "detection_failures": 3
+    },
+    "rgb_adaptive": {
+      "successes": 58,
+      "episodes": 60,
+      "success_rate": 0.9666666666666667,
+      "mean_steps": 2830.2166666666667,
+      "mean_observations": 1.9666666666666666,
+      "mean_replans": 0.5,
+      "detection_failures": 3
+    }
+  },
+  "paired_outcomes": {
+    "both_success": 58,
+    "fixed_only": 0,
+    "adaptive_only": 0,
+    "both_failure": 2
+  },
+  "both_success_step_delta_adaptive_minus_fixed": {
+    "pairs": 58,
+    "mean": 0.0,
+    "minimum": 0,
+    "maximum": 0
+  },
+  "recorded_git_commits": [
+    "2cada2c"
+  ],
+  "model_hashes": [
+    "498e7b75553ad823"
+  ],
+  "provenance_caveat": "Rows record base commit 2cada2c because the vision implementation was in an uncommitted working tree when this pilot ran. The exact dirty source snapshot cannot be reconstructed from Git; retain these data only as exploratory evidence."
+}
