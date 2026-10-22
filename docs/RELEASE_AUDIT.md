@@ -322,3 +322,29 @@ SHA-256 498E7B75553AD823C137A630EBD43DBF7B10923AD2EFB4925F45F216B849EE6E
 
 No v1.1.0 tag was created because the user has not separately confirmed local tag
 creation. No branch, tag, Wheel, archive, or GitHub Release was pushed or published.
+
+## v1.1.0 final publication preparation
+
+**Final preparation date:** 2026-10-22 (America/Chicago)
+
+The final independent audit found one remaining manifest discrepancy. The reviewed
+ZIP stored `results/vision_adaptive_pilot/config.yaml` with CRLF bytes and SHA-256
+`2E653179D30D8D4623D2570299F12EEBA26AC9988A8EA0785A8EA61528E66571`;
+the earlier manifest recorded the LF working-copy hash `D49A62...`. The YAML text
+and settings were identical. Final manifests now use one explicit policy: SHA-256
+is computed over the exact raw bytes in the staged publication package, after Git
+archive extraction and before final compression. No source/config file is rewritten
+to force a preferred newline style.
+
+A dedicated `docs/RELEASE_NOTES_V1.1.0.md` was added. The v1.0.1 draft remains as
+an explicitly archived historical file. The README quick start now selects Python
+3.12, matching the locally accepted environment while retaining declared Python
+3.11–3.12 support.
+
+Real local Git history was checked directly. From experiment commit `0ce598e` to
+release candidate `804816e`, `control.py`, `perception.py`, `eval.py`, `env.py`,
+`task.py`, `vision_analysis.py`, and `configs/vision_benchmark.yaml` have no diff.
+Within `roboadapt/`, the only change is `__init__.py` version metadata from
+`1.1.0.dev0` to `1.1.0`; the other scoped additions are post-experiment analysis
+and review scripts. Thus the release controller, vision path, environment, task
+sampling, and benchmark configuration remain equivalent to the recorded experiment.

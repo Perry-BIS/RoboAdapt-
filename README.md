@@ -20,11 +20,11 @@ simulator state is used only to calculate evaluation errors and task outcomes.
 
 ## Windows quick start
 
-Python 3.11–3.12 is declared; the release audit was executed locally on Python
-3.12.14. In PowerShell:
+Python 3.11–3.12 is declared; the v1.1.0 release acceptance was executed locally
+on Python 3.12.14. In PowerShell:
 
 ```powershell
-py -3.11 -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m pip install .
 .\.venv\Scripts\python.exe scripts\smoke_test.py

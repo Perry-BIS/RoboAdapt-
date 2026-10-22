@@ -1,4 +1,7 @@
-# RoboAdapt v1.0.1 — release notes draft (not published)
+# RoboAdapt v1.0.1 — archived historical release-notes draft
+
+This file is retained for v1.0.1 provenance. The v1.1.0 notes are maintained
+separately in `docs/RELEASE_NOTES_V1.1.0.md`.
 
 Intended first public release of the simulation-only RoboAdapt benchmark. The
 local `v1.0.0` tag identifies an unpublished research snapshot; it remains intact
