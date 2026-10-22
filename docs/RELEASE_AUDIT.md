@@ -348,3 +348,31 @@ Within `roboadapt/`, the only change is `__init__.py` version metadata from
 `1.1.0.dev0` to `1.1.0`; the other scoped additions are post-experiment analysis
 and review scripts. Thus the release controller, vision path, environment, task
 sampling, and benchmark configuration remain equivalent to the recorded experiment.
+
+Final local acceptance on the release-notes commit `12908f4` produced:
+
+```text
+EXPERIMENT_RUNTIME_CONFIG_EQUIVALENCE=PASS
+Pytest: 22 passed in 7.49s
+Strict smoke: 10/10 PASS; required=10/10; model=498e7b75553ad823
+Development pip check: No broken requirements found.
+Fresh-Wheel pip check: No broken requirements found.
+WHEEL_IMPORT_MODEL_LOAD=PASS
+version=1.1.0
+model_hash=498e7b75553ad823
+nq=12 nv=11
+```
+
+The final Wheel was installed non-editably with declared dependencies into a newly
+created Python 3.12 environment and imported from `site-packages` while the command
+ran outside the repository. Packaged `vision_analysis.py` and `assets/scene.xml`
+were present and the MuJoCo model loaded successfully.
+
+```text
+roboadapt-1.1.0-py3-none-any.whl
+SHA-256 3C33FEB85812EC162B6EFED02D649843EF1930CEB4E5361C25148C19DDED9824
+```
+
+The Wheel differs from the preceding `2DB076...` candidate because the README,
+which is embedded in Wheel metadata, was updated for the final Python 3.12 quick
+start and release wording. Runtime package modules are otherwise unchanged.
