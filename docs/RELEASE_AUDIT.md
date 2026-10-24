@@ -376,3 +376,22 @@ SHA-256 3C33FEB85812EC162B6EFED02D649843EF1930CEB4E5361C25148C19DDED9824
 The Wheel differs from the preceding `2DB076...` candidate because the README,
 which is embedded in Wheel metadata, was updated for the final Python 3.12 quick
 start and release wording. Runtime package modules are otherwise unchanged.
+
+## v1.1.0 public release
+
+The user explicitly authorized publication on 2026-10-23 (America/Chicago).
+Commit `66e6d15a914766c10f293bc8832b3a5f07b3a727` was fast-forwarded to GitHub
+`main`; the existing v1.0.1 tag was not moved. The annotated `v1.1.0` tag points
+to that commit and the public, non-prerelease GitHub Release is:
+
+https://github.com/Perry-BIS/RoboAdapt-/releases/tag/v1.1.0
+
+Uploaded assets:
+
+- `roboadapt-1.1.0-py3-none-any.whl`, GitHub-reported SHA-256
+  `3C33FEB85812EC162B6EFED02D649843EF1930CEB4E5361C25148C19DDED9824`.
+- `SHA256SUMS.txt`, containing the nine raw-byte release-package digests.
+
+The following commit only updates default-branch documentation from candidate
+wording to published status. It does not move the release tag or alter any Release
+asset, experiment result, package code, or benchmark configuration.

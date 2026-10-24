@@ -1,6 +1,6 @@
 # RoboAdapt v1.1 vision-in-the-loop development report
 
-**Status:** local v1.1.0 release candidate; not released
+**Status:** released as `v1.1.0` on GitHub on 2026-10-23 (America/Chicago)
 
 **Run date:** 2026-10-20 (America/Chicago)
 

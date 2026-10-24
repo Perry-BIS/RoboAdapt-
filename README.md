@@ -79,7 +79,7 @@ License: MIT for project code/assets. MuJoCo is an Apache-2.0 dependency; see
 
 ## Reproduced results
 
-### v1.1.0 release candidate: rendered RGB in the control loop
+### v1.1.0: rendered RGB in the control loop
 
 The independent v1.1 run contains 360 episodes (20 base seeds reused across 3 visual
 conditions × 2 displacement levels × 3 controllers). This yields 120 matched
